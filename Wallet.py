@@ -2,9 +2,9 @@ from configs import TEST_WALLET,TAXA_COMPRA,TAXA_VENDA
 import pandas as pd
 class CurrencyBalance :
     def __init__(self,available = 0,total = 0,amount_open = 0):
-        self.available = available
-        self.total = total
-        self.amount_open_orders = amount_open
+        self.available = float(available)
+        self.total = float(total)
+        self.amount_open_orders = int(amount_open)
 
 class Balance: 
     def __init__(self,brl,btc,eth):
@@ -33,13 +33,13 @@ class Wallet:
     
     def buy(self,price = 1,rel = 1,currency = "BTC",date = 0):
         if(self.testing_mode):
-            val = -1*self.balance.brl.available*rel
-            val = val * TAXA_COMPRA
+            val = -1*self.balance.brl.available*rel/100
             print(val)
-            print("Comprando " + str(val/price) + currency )
+            aux = val/price
+            print("Comprando " + str(aux) + currency )
             self.balance.brl.available-= val
             if(currency == "BTC"):
-                self.balance.btc.available+=val/price
+                self.balance.btc.available+=val* (1-TAXA_COMPRA/100)/price
             self.history.append([self.balance.brl.available,self.balance.btc.available,currency,date,"compra"])
         else:
             print("Ainda não implementado o modo pra valer")
@@ -49,12 +49,11 @@ class Wallet:
         val = 0
         if(self.testing_mode):
             if(currency == "BTC"):
-                val = self.balance.btc.available*rel
-            val = val * TAXA_VENDA
+                val = self.balance.btc.available*rel/100
             print(val)
             print("Vendendo " + str(val) + currency )
             self.balance.btc.available-= val
-            self.balance.brl.available+=val/price
+            self.balance.brl.available+=val* (1- TAXA_VENDA/100)/price
             self.history.append([self.balance.brl.available,self.balance.btc.available,currency,date,"venda"])
             
         else:

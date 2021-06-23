@@ -44,7 +44,7 @@ def main():
                 print(myWallet)
             else:
                 if(relacao<= -0.5):
-                    myWallet.buy(ticker.last,relacao,ticker.date)
+                    myWallet.buy(price = ticker.last,rel = relacao,date = ticker.date)
                     last_price = ticker.last
                     print(myWallet)
                 else:
