@@ -6,7 +6,7 @@ A python script to trade cryptocurrency
 
 if you don't have pipenv installed, istall it with `pip install pipenv`
 
-- Create a config.py file and follow the instructions here, and inthe configs.example.py file to fill up the variables
+- Create a `configs.py` file and follow the instructions here, and in the `configs.example.py` file to fill up the variables
 - `pipenv shell`
 - `pipenv install`
 - `python main.py`
