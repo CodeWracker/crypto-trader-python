@@ -5,12 +5,8 @@ from Wallet import Wallet
 from pprint import pprint
 
 
-last_price = 0
 
-def operation_handler(opt,price):
-    global last_price
-    print(opt)
-    last_price = price
+
 def main():
     isTesting = input("voce deseja usar a carteira de testes e simular as taxas? S/N  ")
     if(isTesting == "S" or isTesting == "s"):
@@ -20,15 +16,16 @@ def main():
     
     myWallet = Wallet()
     if(not isTesting):
-        myWallet("Sei la ainda não fiz kkkk, tem que pegar os dados antes")
+        myWallet("Sei la ainda não fiz kkkk, tem que pegar os dados antes",testing = False)
     print()
     print(myWallet)
     print()
     
     time = 0
-    global last_price
+    
+    last_price = 0
     while True:
-        ticker = getTicker("BTC")
+        ticker = getTicker("BTC") # coloque como segundo parametro True, caso queria ver o endereço que esta sendo chamado
         if(ticker is None):
             continue
         if(ticker.date - time >= 10):
@@ -42,11 +39,16 @@ def main():
             relacao = 100*ticker.last/last_price - 100
             print(relacao)
             if(relacao >= 1):
-                operation_handler("Vender",ticker.last)
+                myWallet.sell(price = ticker.last,rel = relacao,date = ticker.date)
+                last_price = ticker.last
+                print(myWallet)
             else:
                 if(relacao<= -0.5):
-                    operation_handler("Comprar",ticker.last)
+                    myWallet.buy(ticker.last,relacao,ticker.date)
+                    last_price = ticker.last
+                    print(myWallet)
                 else:
                     print("Hold")
+        myWallet.save()
 if __name__ == "__main__":
     main()

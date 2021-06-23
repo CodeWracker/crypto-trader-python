@@ -4,7 +4,10 @@ A python script to trade cryptocurrency
 
 # How to start this
 
+if you don't have pipenv installed, istall it with `pip install pipenv`
+
 - pipenv shell
+- pipenv install
 - python main.py
 
 ## Configurations secrets
@@ -16,6 +19,10 @@ I don't remember where to get it now, but when I start to use it I will put it h
 ### TAPI_SECRET
 
 Same as the above
+
+### TAXA_COMPRA and TAXA_VENDA
+
+those are the tax percentage you pay for the type of transaction
 
 ### TEST_WALLET
 

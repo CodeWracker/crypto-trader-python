@@ -3,6 +3,8 @@ TAPI_ID = ""
 TAPI_SECRET = ""
 NEGOTIATION_BASEURL = "https://www.mercadobitcoin.net/tapi/v3/"
 
+TAXA_COMPRA = 0.7
+TAXA_VENDA = 0.3
 TEST_WALLET = {
     "balance": {
         "brl": {
