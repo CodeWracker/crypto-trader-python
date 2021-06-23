@@ -33,7 +33,7 @@ class Wallet:
     
     def buy(self,price = 1,rel = 1,currency = "BTC",date = 0):
         if(self.testing_mode):
-            val = -1*self.balance.brl.available*rel/100
+            val = self.balance.brl.available
             print(val)
             aux = val/price
             print("Comprando " + str(aux) + currency )
@@ -49,7 +49,7 @@ class Wallet:
         val = 0
         if(self.testing_mode):
             if(currency == "BTC"):
-                val = self.balance.btc.available*rel/100
+                val = self.balance.btc.available
             print(val)
             print("Vendendo " + str(val) + currency )
             self.balance.btc.available-= val
