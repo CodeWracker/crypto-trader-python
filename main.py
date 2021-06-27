@@ -3,7 +3,7 @@ from serviceMercadoBTC import getTicker
 
 from Wallet import Wallet
 from pprint import pprint
-
+from agent import agent
 
 
 
@@ -23,7 +23,7 @@ def main():
     
     time = 0
     
-    last_price = 0
+    
     while True:
         ticker = getTicker("BTC") # coloque como segundo parametro True, caso queria ver o endereço que esta sendo chamado
         if(ticker is None):
@@ -32,23 +32,11 @@ def main():
             time = ticker.date
             print()
             print(ticker)
-            if(last_price == 0):
-                last_price = ticker.last
-                continue
             
-            relacao = 100*ticker.last/last_price - 100
-            print(relacao)
-            if(relacao >= 1):
-                myWallet.sell(price = ticker.last,rel = relacao,date = ticker.date)
-                last_price = ticker.last
-                print(myWallet)
-            else:
-                if(relacao<= -0.5):
-                    myWallet.buy(price = ticker.last,rel = relacao,date = ticker.date)
-                    last_price = ticker.last
-                    print(myWallet)
-                else:
-                    print("Hold")
+            
+            decision = agent(ticker, myWallet)
+            myWallet.execute_operation(operation = decision[0],qtd = decision[1], date = ticker.date,price= ticker.last)
+
         myWallet.save()
 if __name__ == "__main__":
     main()

@@ -1,5 +1,6 @@
 from configs import TEST_WALLET,TAXA_COMPRA,TAXA_VENDA
 import pandas as pd
+import numpy as np
 class CurrencyBalance :
     def __init__(self,available = 0,total = 0,amount_open = 0):
         self.available = float(available)
@@ -30,35 +31,34 @@ class Wallet:
     def __str__(self):
         string = "Balance:\n    brl: %s,\n    btc: %s,\n    eth: %s"%(self.balance.brl.available,self.balance.btc.available,self.balance.eth.available)
         return string
-    
-    def buy(self,price = 1,rel = 1,currency = "BTC",date = 0):
+
+    def execute_operation(self, operation = 0,qtd = 1,currency = "BTC",date = 0,price = 1):
+        operations = [self.buy,self.sell,self.hold]
+        operations[operation](qtd,currency,date,price)
+
+    def buy(self,qtd = 1,currency = "BTC",date = 0,price = 1):
         if(self.testing_mode):
-            val = self.balance.brl.available
-            print(val)
-            aux = val/price
-            print("Comprando " + str(aux) + currency )
-            self.balance.brl.available-= val
+            print("Comprando " + str(qtd) + currency + " por " + str(qtd * price) )
+            self.balance.brl.available-= qtd * price
             if(currency == "BTC"):
-                self.balance.btc.available+=val* (1-TAXA_COMPRA/100)/price
+                self.balance.btc.available+= qtd* (1-TAXA_COMPRA/100)
             self.history.append([self.balance.brl.available,self.balance.btc.available,currency,date,"compra"])
         else:
             print("Ainda não implementado o modo pra valer")
         return
     
-    def sell(self,price = 1,rel = 1,currency = "BTC",date = 0):
-        val = 0
+    def sell(self,qtd = 00.1,currency = "BTC",date = 0,price = 1):
         if(self.testing_mode):
-            if(currency == "BTC"):
-                val = self.balance.btc.available
-            print(val)
-            print("Vendendo " + str(val) + currency )
-            self.balance.btc.available-= val
-            self.balance.brl.available+=val* (1- TAXA_VENDA/100)/price
+            print("Vendendo " + str(qtd) + currency + " por " + str(qtd * price) )
+            self.balance.btc.available-= qtd
+            self.balance.brl.available+=qtd* (1- TAXA_VENDA/100)*price
             self.history.append([self.balance.brl.available,self.balance.btc.available,currency,date,"venda"])
             
         else:
             print("Ainda não implementado o modo pra valer")
         return
+    def hold(self,operation = 0,qtd = 1,currency = "BTC",date = 0,price = 1):
+        print("Hold")
     
     def save(self):
         brl = []
