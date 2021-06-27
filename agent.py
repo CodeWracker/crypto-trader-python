@@ -8,15 +8,16 @@ def agent(ticker: Ticker, wallet: Wallet):
     if(last_price == 0):
         last_price = ticker.last
         return [ 2, wallet.balance.brl.available/ticker.high]
-    last_price = ticker.last
     relacao = 100*ticker.last/last_price - 100
     print(relacao)
     if(relacao >= 1):
         print(myWallet)
+        last_price = ticker.last
         return [ 1, wallet.balance.btc.available]
     else:
-        if(relacao<= -0.5):
+        if(relacao<= -1):
             print(myWallet)
+            last_price = ticker.last
             return [ 0, wallet.balance.brl.available/ticker.high]
             
         else:
